@@ -1,0 +1,143 @@
+version: "3"
+
+services:
+  tekxit:
+    container_name: tekxit
+    environment:
+      # Server config
+      - ALLOW_FLIGHT=TRUE
+      - ALLOW_NETHER=true
+      - DIFFICULTY=normal
+      - ENABLE_COMMAND_BLOCK=true
+      - ENABLE_RCON=false
+      - EULA=TRUE
+      - FORGEVERSION=10.13.4.1614
+      - GENERATE_STRUCTURES=true
+      - HARDCORE=false
+      - LEVEL=world
+      - LEVEL_TYPE=default
+      - MAX_BUILD_HEIGHT=256
+      - MAX_PLAYERS=20
+      #- MODPACK=http://www.example.com/mods/modpack.zip
+      - MOTD=GMCommunity Tekxit Server
+      - ONLINE_MODE=TRUE
+      - PVP=true
+      #- REMOVE_OLD_MODS="FALSE" 
+      - SERVER_NAME=GMCommunity Tekxit Server
+      - SERVER_PORT=25565
+      - SNOOPER_ENABLED=false
+      - SPAWN_ANIMALS=true
+      - SPAWN_MONSTERS=true
+      - SPAWN_NPCS=true
+      - TYPE=FORGE
+      - VERSION=1.7.10
+      # JAVA VM
+      - INIT_MEMORY=2G
+      - MAX_MEMORY=8G
+    hostname: tekxit
+    image: itzg/minecraft-server
+    ports: 
+      - "25565:25565"
+    restart: always
+    stdin_open: true
+    stop_grace_period: 90s
+    tty: true
+    volumes:
+      - tekxit_data:/data
+
+  bukkit:
+    container_name: bukkit
+    environment:
+      # Server config
+      - ALLOW_FLIGHT=TRUE
+      - ALLOW_NETHER=true
+      - DIFFICULTY=normal
+      - ENABLE_COMMAND_BLOCK=true
+      - ENABLE_RCON=false
+      - EULA=TRUE
+      - GENERATE_STRUCTURES=true
+      - HARDCORE=false
+      - LEVEL=world
+      - LEVEL_TYPE=default
+      - MAX_BUILD_HEIGHT=256
+      - MAX_PLAYERS=20
+      - MOTD=GMCommunity Tekxit Server
+      - ONLINE_MODE=TRUE
+      - PVP=true
+      - SERVER_NAME=GMCommunity Tekxit Server
+      - SERVER_PORT=25566
+      - SNOOPER_ENABLED=false
+      - SPAWN_ANIMALS=true
+      - SPAWN_MONSTERS=true
+      - SPAWN_NPCS=true
+      - TYPE=SPIGOT
+      - VERSION=1.8.8-R0.1-SNAPSHOT-latest
+      # JAVA VM
+      - INIT_MEMORY=2G
+      - MAX_MEMORY=8G
+    hostname: bukkit
+    image: itzg/minecraft-server
+    ports: 
+      - "25566:25566"
+    restart: always
+    stdin_open: true
+    stop_grace_period: 90s
+    tty: true
+    volumes:
+      - bukkit_data:/data
+
+  teamspeak:
+    container_name: teamspeak
+    environment:
+      # Server config
+      - TS3SERVER_LICENSE=accept
+      - TS3SERVER_LOG_APPEND=0
+      - TS3SERVER_QUERY_PROTOCOLS=ssh
+    hostname: teamspeak
+    image: teamspeak
+    ports: 
+      - 9987:9987/udp
+      # SSH Server query
+      #- 10022:10022
+      - 30033:30033
+    restart: always
+    stop_grace_period: 30s
+    volumes:
+      - teamspeak_data:/var/ts3server
+
+  ark:
+    container_name: ark
+    environment:
+      - AUTOUPDATE=120
+      - AUTOBACKUP=60
+      - WARNMINUTE=30
+      - SESSIONNAME=GMCommunity
+      - SERVERMAP=TheIsland
+      - SERVERPASSWORD=:changeme
+      - ADMINPASSWORD=:changeme
+      - WARNONSTOP=1
+      - TZ=Europe/Berlin
+    hostname: ark
+    image: turzam/ark
+    ports:
+      - 7778:7778
+      - 7778:7778/udp
+      - 27015:27015
+      - 27015:27015/udp
+      - 32330:32330
+    restart: always
+    stdin_open: true
+    stop_grace_period: 90s
+    tty: true
+    ulimits:
+      nofile:
+        soft: 100000
+        hard: 100000
+    volumes:
+      - ark_data:/ark
+
+volumes:
+  teamspeak_data:
+  tekxit_data:
+  bukkit_data:
+  ark_data:
