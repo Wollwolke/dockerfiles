@@ -113,8 +113,8 @@ services:
       - WARNMINUTE=30
       - SESSIONNAME=GMCommunity
       - SERVERMAP=TheIsland
-      - SERVERPASSWORD=:changeme
-      - ADMINPASSWORD=:changeme
+      - SERVERPASSWORD=a
+      - ADMINPASSWORD=bratwurst
       - WARNONSTOP=1
       - TZ=Europe/Berlin
     hostname: ark
@@ -139,7 +139,7 @@ services:
   ddnet-map-sync:
     container_name: ddnet-map-sync
     environment:
-      - GIT_SYNC_REPO="https://github.com/ddnet/ddnet-maps"
+      - GIT_SYNC_REPO=https://github.com/ddnet/ddnet-maps
     hostname: ddnet-map-sync
     image: martinvw/git-sync
     restart: always
@@ -153,6 +153,8 @@ services:
     container_name: ddnet-server
     hostname: ddnet-server
     image: wollwolke/ddnet-server
+    ports:
+      - 8303:8303/udp
     restart: always
     stdin_open: true
     stop_grace_period: 90s
