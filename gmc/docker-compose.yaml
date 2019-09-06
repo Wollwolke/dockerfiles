@@ -136,7 +136,33 @@ services:
     volumes:
       - ark_data:/ark
 
+  ddnet-map-sync:
+    container_name: ddnet-map-sync
+    environment:
+      - GIT_SYNC_REPO="https://github.com/ddnet/ddnet-maps"
+    hostname: ddnet-map-sync
+    image: martinvw/git-sync
+    restart: always
+    stdin_open: true
+    stop_grace_period: 90s
+    tty: true
+    volumes:
+      - ddnet_data:/git
+
+  ddnet-server:
+    container_name: ddnet-server
+    hostname: ddnet-server
+    image: wollwolke/ddnet-server
+    restart: always
+    stdin_open: true
+    stop_grace_period: 90s
+    tty: true
+    volumes:
+      - ddnet_data:/data
+
+
 volumes:
+  ddnet_data:
   teamspeak_data:
   tekxit_data:
   bukkit_data:
